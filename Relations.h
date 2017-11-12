@@ -1,54 +1,68 @@
-//StudentId-Name-Address-Grade
-typedef struct SNAP *SNAPLIST;
-typedef SNAPLIST SNAP_HASHTABLE[1009];
+#include <string.h>
+#include <stdlib.h>
 
-struct SNAP
+#define NAMELENGTH 30
+#define ADDRESSLENGTH 20
+#define PHONELENGTH 10
+#define COURSELENGTH 6
+#define HOURLENGTH 4
+#define DAYLENGTH 1
+#define GRADELENGTH 2
+#define ROOMLENGTH 20
+
+//StudentId-Name-Address-Grade
+typedef struct SNAP
 {
   int StudentId;
-  char Name[30];
-  char Address[50];
-  char Phone[8];
-  SNAPLIST next;
-};
-
-typedef struct CSG *CSGLIST;
-typedef CSGLIST CSG_HASHTABLE[1009];
+  char Name[NAMELENGTH];
+  char Address[ADDRESSLENGTH];
+  char Phone[PHONELENGTH];
+  struct SNAP* next;
+}SNAP;
 
 //Course-StudentId-Grade
-struct CSG
+typedef struct CSG
 {
-  char* Course[6];
-  int StudentId[5];
-  char* Grade[2];
+  char Course[COURSELENGTH];
+  int StudentId;
+  char Grade[GRADELENGTH];
+  struct CSG* next;
 }CSG;
 
-typedef struct CP *CPLIST;
-typedef CPLIST CP_HASHTABLE[1009];
-
 //Course=Prerequisite
-struct CP
+typedef struct CP
 {
-  char* Course[6];
-  char* Prerequisite[6];
+  char Course[COURSELENGTH];
+  char Prerequisite[COURSELENGTH];
+  struct CP* next;
 }CP;
 
-typedef struct CDH *CDHLIST;
-typedef CDHLIST CDH_HASHTABLE[1009];
-
 //Course-Day-Hour
-struct CDH
+typedef struct CDH
 {
-  char* Course[6];
-  char* Day[1];
-  char* Hour[3];
+  char Course[COURSELENGTH];
+  char Day[DAYLENGTH];
+  char Hour[HOURLENGTH];
+  struct CDH* next;
 }CDH;
 
-typedef struct CR *CRLIST;
-typedef CRLIST CR_HASHTABLE[1009];
-
 //Course-Room
-struct CR
+typedef struct CR
 {
-  char* Course[6];
-  char* Room[20];
+  char Course[COURSELENGTH];
+  char Room[ROOMLENGTH];
+  struct CR* next;
 }CR;
+
+/*
+  Tuple comparision fn's
+*/
+
+int equal_SNAP(SNAP* s1, SNAP* s2);
+
+
+/*
+  Tuple creation fn's
+*/
+
+SNAP* SNAP_new(int StudentId, char* Name, char* Address, char* Phone);
