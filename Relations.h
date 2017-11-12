@@ -1,38 +1,54 @@
-//Course-StudentId-Grade
-typedef struct CSG
+//StudentId-Name-Address-Grade
+typedef struct SNAP *SNAPLIST;
+typedef SNAPLIST SNAP_HASHTABLE[1009];
+
+struct SNAP
 {
-  char* Course;
   int StudentId;
-  char* Grade;
+  char Name[30];
+  char Address[50];
+  char Phone[8];
+  SNAPLIST next;
+};
+
+typedef struct CSG *CSGLIST;
+typedef CSGLIST CSG_HASHTABLE[1009];
+
+//Course-StudentId-Grade
+struct CSG
+{
+  char* Course[6];
+  int StudentId[5];
+  char* Grade[2];
 }CSG;
 
-//StudentId-Name-Address-Phone
-typedef struct SNAP
-{
-  int StudentId;
-  char* Name;
-  char* Address;
-  int Phone;
-}SNAP;
+typedef struct CP *CPLIST;
+typedef CPLIST CP_HASHTABLE[1009];
 
 //Course=Prerequisite
-typedef struct CP
+struct CP
 {
-  char* Course;
-  char* Prerequisite;
+  char* Course[6];
+  char* Prerequisite[6];
 }CP;
 
+typedef struct CDH *CDHLIST;
+typedef CDHLIST CDH_HASHTABLE[1009];
+
 //Course-Day-Hour
-typedef struct CDH
+struct CDH
 {
-  char* Course;
-  char* Day;
-  char* Hour;
+  char* Course[6];
+  char* Day[1];
+  char* Hour[3];
 }CDH;
 
+typedef struct CR *CRLIST;
+typedef CRLIST CR_HASHTABLE[1009];
+
 //Course-Room
-typedef struct CR
+struct CR
 {
-  char* Course;
-  char* Room;
+  char* Course[6];
+  char* Room[20];
 }CR;
