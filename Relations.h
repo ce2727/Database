@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define NAMELENGTH 30
 #define ADDRESSLENGTH 20

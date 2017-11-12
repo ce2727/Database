@@ -24,3 +24,5 @@ int courseToInt(char* Course);
 
 //Insert Variations
 void insert_SNAP(Database* D, SNAP* toInsert);
+
+void delete_SNAP(Database* D, SNAP* toDelete);
