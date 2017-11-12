@@ -3,7 +3,7 @@
 
 int main()
 {
-  LinkedList* TestLst = LinkedList_new();
+  /*LinkedList* TestLst = LinkedList_new();
   LinkedList_add_at_end(TestLst, 4);
   LinkedList_add_at_end(TestLst, 3);
   LinkedList_add_at_end(TestLst, 1);
@@ -18,5 +18,10 @@ int main()
   Set_add_at_end(TestSt, 2);
 
   Set_print_set(TestSt);
-  
+  */
+
+  LinkedList** array;
+  array = malloc(4*sizeof(LinkedList*));
+
+  LinkedList_add_at_end(array[4], 4);
 }

@@ -8,7 +8,7 @@ typedef struct LinkedListNode {
     struct LinkedListNode *prev;
 } LinkedListNode;
 
-typedef struct  {
+typedef struct LinkedList {
     struct LinkedListNode *first;
     struct LinkedListNode *last;
 }LinkedList;
