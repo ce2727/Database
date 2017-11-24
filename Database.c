@@ -28,6 +28,91 @@ int courseToInt(char* Course)
 }
 
 /*
+  Lookup Functions -------------------------------------------
+*/
+
+//SNAP Lookup
+SNAP* lookup_SNAP(Database* D, SNAP* toLookup)
+{
+  int index = hash(toLookup->StudentId);
+
+  for (SNAP* iter = D->SNAPTable[index]; iter != NULL; iter = iter->next)
+  {
+    if (equal_SNAP(toLookup, iter))//If we've found the matching entry as iter's next
+    {
+      printf("FOUND!");
+      return iter;
+    }
+  }
+  return NULL;
+}
+
+//CSG Lookup
+CSG* lookup_CSG(Database* D, CSG* toLookup)
+{
+  int index = hash(toLookup->StudentId);
+
+  for (CSG* iter = D->CSGTable[index]; iter != NULL; iter = iter->next)
+  {
+    if (equal_CSG(toLookup, iter))//If we've found the matching entry as iter's next
+    {
+      printf("FOUND!");
+      return iter;
+    }
+  }
+  return NULL;
+}
+
+
+//CP Lookup
+CP* lookup_CP(Database* D, CP* toLookup)
+{
+  int index = hash(courseToInt(toLookup->Course));
+
+  for (CP* iter = D->CPTable[index]; iter != NULL; iter = iter->next)
+  {
+    if (equal_CP(toLookup, iter))//If we've found the matching entry as iter's next
+    {
+      printf("FOUND!");
+      return iter;
+    }
+  }
+  return NULL;
+}
+
+//CDH Lookup
+CDH* lookup_CDH(Database* D, CDH* toLookup)
+{
+  int index = hash(courseToInt(toLookup->Course));
+
+  for (CDH* iter = D->CDHTable[index]; iter != NULL; iter = iter->next)
+  {
+    if (equal_CDH(toLookup, iter))//If we've found the matching entry as iter's next
+    {
+      printf("FOUND!");
+      return iter;
+    }
+  }
+  return NULL;
+}
+
+//CR Lookup
+CR* lookup_CR(Database* D, CR* toLookup)
+{
+  int index = hash(courseToInt(toLookup->Course));
+
+  for (CR* iter = D->CRTable[index]; iter != NULL; iter = iter->next)
+  {
+    if (equal_CR(toLookup, iter))//If we've found the matching entry as iter's next
+    {
+      printf("FOUND!");
+      return iter;
+    }
+  }
+  return NULL;
+}
+
+/*
   Insert Functions -------------------------------------------
 */
 
@@ -134,23 +219,129 @@ void delete_SNAP(Database* D, SNAP* toDelete)
 
   if (D->SNAPTable[index] == NULL) return; //Not found
 
-  if (equal_SNAP(D->SNAPTable[index], toDelete))//If it's the first in bucket
+  if (equal_SNAP(D->SNAPTable[index], toDelete))//If it's the first in bucket before cycling through
   {
     SNAP* toFree = D->SNAPTable[index];
     D->SNAPTable[index] = D->SNAPTable[index]->next;
-    //CHECK HERE IF GETTING CRASHES!!!!!!!!!//TODO
     free(toFree);
-  }
+  } else {//Not in first bucket
 
-  //Time to check through the list
-  //For each SNAP in the bucket
-  for (SNAP* iter = D->SNAPTable[index]; iter->next != NULL; iter = iter->next)
-  {
-    if (equal_SNAP(toDelete, iter->next))//If we've found the matching entry as iter's next
+    for (SNAP* iter = D->SNAPTable[index]; iter != NULL && iter->next != NULL; iter = iter->next)
     {
-      SNAP* toFree = iter->next;
-      iter->next = iter->next->next;//Create a new link in the list that bypasses the deleted node
-      free(toFree);//Free the deleted data
+      if (equal_SNAP(toDelete, iter->next))//If we've found the matching entry as iter's next
+      {
+        SNAP* toFree = iter->next;
+        iter->next = iter->next->next;//Create a new link in the list that bypasses the deleted node
+
+        free(toFree);//Free the deleted data
+      }
+    }
+  }
+}
+
+
+void delete_CSG(Database* D, CSG* toDelete)
+{
+  int index = hash(toDelete->StudentId);
+
+  if (D->CSGTable[index] == NULL) return; //Not found
+
+  if (equal_CSG(D->CSGTable[index], toDelete))//If it's the first in bucket before cycling through
+  {
+    CSG* toFree = D->CSGTable[index];
+    D->CSGTable[index] = D->CSGTable[index]->next;
+    free(toFree);
+  } else {//Not in first bucket
+
+    for (CSG* iter = D->CSGTable[index]; iter != NULL && iter->next != NULL; iter = iter->next)
+    {
+      if (equal_CSG(toDelete, iter->next))//If we've found the matching entry as iter's next
+      {
+        CSG* toFree = iter->next;
+        iter->next = iter->next->next;//Create a new link in the list that bypasses the deleted node
+
+        free(toFree);//Free the deleted data
+      }
+    }
+  }
+}
+
+
+void delete_CP(Database* D, CP* toDelete)
+{
+  int index = hash(courseToInt(toDelete->Course));
+
+  if (D->CPTable[index] == NULL) return; //Not found
+
+  if (equal_CP(D->CPTable[index], toDelete))//If it's the first in bucket before cycling through
+  {
+    CP* toFree = D->CPTable[index];
+    D->CPTable[index] = D->CPTable[index]->next;
+    free(toFree);
+  } else {//Not in first bucket
+
+    for (CP* iter = D->CPTable[index]; iter != NULL && iter->next != NULL; iter = iter->next)
+    {
+      if (equal_CP(toDelete, iter->next))//If we've found the matching entry as iter's next
+      {
+        CP* toFree = iter->next;
+        iter->next = iter->next->next;//Create a new link in the list that bypasses the deleted node
+
+        free(toFree);//Free the deleted data
+      }
+    }
+  }
+}
+
+
+void delete_CDH(Database* D, CDH* toDelete)
+{
+  int index = hash(courseToInt(toDelete->Course));
+
+  if (D->CDHTable[index] == NULL) return; //Not found
+
+  if (equal_CDH(D->CDHTable[index], toDelete))//If it's the first in bucket before cycling through
+  {
+    CDH* toFree = D->CDHTable[index];
+    D->CDHTable[index] = D->CDHTable[index]->next;
+    free(toFree);
+  } else {//Not in first bucket
+
+    for (CDH* iter = D->CDHTable[index]; iter != NULL && iter->next != NULL; iter = iter->next)
+    {
+      if (equal_CDH(toDelete, iter->next))//If we've found the matching entry as iter's next
+      {
+        CDH* toFree = iter->next;
+        iter->next = iter->next->next;//Create a new link in the list that bypasses the deleted node
+
+        free(toFree);//Free the deleted data
+      }
+    }
+  }
+}
+
+void delete_CR(Database* D, CR* toDelete)
+{
+  int index = hash(courseToInt(toDelete->Course));
+
+  if (D->CRTable[index] == NULL) return; //Not found
+
+  if (equal_CR(D->CRTable[index], toDelete))//If it's the first in bucket before cycling through
+  {
+    CR* toFree = D->CRTable[index];
+    D->CRTable[index] = D->CRTable[index]->next;
+    free(toFree);
+  } else {//Not in first bucket
+
+    for (CR* iter = D->CRTable[index]; iter != NULL && iter->next != NULL; iter = iter->next)
+    {
+      if (equal_CR(toDelete, iter->next))//If we've found the matching entry as iter's next
+      {
+        CR* toFree = iter->next;
+        iter->next = iter->next->next;//Create a new link in the list that bypasses the deleted node
+
+        free(toFree);//Free the deleted data
+      }
     }
   }
 }

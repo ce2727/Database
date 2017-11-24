@@ -3,13 +3,13 @@
 #include <stdio.h>
 
 #define NAMELENGTH 30
-#define ADDRESSLENGTH 20
-#define PHONELENGTH 10
-#define COURSELENGTH 6
-#define HOURLENGTH 4
-#define DAYLENGTH 1
-#define GRADELENGTH 2
-#define ROOMLENGTH 20
+#define ADDRESSLENGTH 30
+#define PHONELENGTH 13
+#define COURSELENGTH 7 //Allocated as 1 extra to auto include null terminator - had accidental concatenation issues
+#define HOURLENGTH 5
+#define DAYLENGTH 2
+#define GRADELENGTH 3
+#define ROOMLENGTH 30
 
 //StudentId-Name-Address-Grade
 typedef struct SNAP
@@ -61,9 +61,23 @@ typedef struct CR
 
 int equal_SNAP(SNAP* s1, SNAP* s2);
 
+int equal_CSG(CSG* c1, CSG* c2);
 
+int equal_CP(CP* c1, CP* c2);
+
+int equal_CDH(CDH* c1, CDH* c2);
+
+int equal_CR(CR* c1, CR* c2);
 /*
   Tuple creation fn's
 */
 
 SNAP* SNAP_new(int StudentId, char* Name, char* Address, char* Phone);
+
+CSG* CSG_new(char* Course, int StudentId, char* Grade);
+
+CP* CP_new(char* Course, char* Prerequisite);
+
+CDH* CDH_new(char* Course, char* Day, char* Hour);
+
+CR* CR_new(char* Course, char* Room);
