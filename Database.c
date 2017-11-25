@@ -17,13 +17,13 @@ int hash(int input)
   return input % 1009;
 }
 
-int courseToInt(char* Course)
+int stringToInt(char* string)
 {
   int pile = 0;
 
   for(int i = 0; i < 6; i++)
   {
-    pile += (int)Course[i];
+    pile += (int)string[i];
   }
 }
 
@@ -31,85 +31,101 @@ int courseToInt(char* Course)
   Lookup Functions -------------------------------------------
 */
 
-//SNAP Lookup
-SNAP* lookup_SNAP(Database* D, SNAP* toLookup)
+//SNAP Lookup----------------------------------
+SNAP** lookup_SNAP(Database* D, SNAP* toLookup)
 {
-  int index = hash(toLookup->StudentId);
+  int index = hash(stringToInt(toLookup->StudentId));
+  SNAP** retList = (SNAP**)calloc(QUERY_RETURN_SIZE,sizeof(SNAP*));
 
+  int i = 0;//Helps to index pointers in double pointer
   for (SNAP* iter = D->SNAPTable[index]; iter != NULL; iter = iter->next)
   {
-    if (equal_SNAP(toLookup, iter))//If we've found the matching entry as iter's next
+    if (equal_SNAP(toLookup, iter))//If we've found the matching entry as iter
     {
-      printf("FOUND!");
-      return iter;
+      retList[i] = iter;
+      //printf("Found match, adding %s to list!\n",iter->Address);
+      i++;
     }
   }
-  return NULL;
-}
+  if (retList[0] == NULL) return NULL;//If list is empty, return null directly
+  return retList;
+}//--------------------------------------------
 
 //CSG Lookup
-CSG* lookup_CSG(Database* D, CSG* toLookup)
+CSG** lookup_CSG(Database* D, CSG* toLookup)
 {
-  int index = hash(toLookup->StudentId);
+  int index = hash(stringToInt(toLookup->StudentId));
+  CSG** retList = (CSG**)calloc(QUERY_RETURN_SIZE,sizeof(CSG*));
 
+  int i = 0;//Helps to index pointers in double pointer
   for (CSG* iter = D->CSGTable[index]; iter != NULL; iter = iter->next)
   {
     if (equal_CSG(toLookup, iter))//If we've found the matching entry as iter's next
     {
-      printf("FOUND!");
-      return iter;
+      retList[i] = iter;
+      i++;
     }
   }
-  return NULL;
+  if (retList[0] == NULL) return NULL;//If list is empty, return null directly
+  return retList;
 }
 
 
 //CP Lookup
-CP* lookup_CP(Database* D, CP* toLookup)
+CP** lookup_CP(Database* D, CP* toLookup)
 {
-  int index = hash(courseToInt(toLookup->Course));
+  int index = hash(stringToInt(toLookup->Course));
+  CP** retList = (CP**)calloc(QUERY_RETURN_SIZE,sizeof(CP*));
 
+  int i = 0;//Helps to index pointers in double pointer
   for (CP* iter = D->CPTable[index]; iter != NULL; iter = iter->next)
   {
     if (equal_CP(toLookup, iter))//If we've found the matching entry as iter's next
     {
-      printf("FOUND!");
-      return iter;
+      retList[i] = iter;
+      i++;
     }
   }
-  return NULL;
+  if (retList[0] == NULL) return NULL;//If list is empty, return null directly
+  return retList;
 }
 
 //CDH Lookup
-CDH* lookup_CDH(Database* D, CDH* toLookup)
+CDH** lookup_CDH(Database* D, CDH* toLookup)
 {
-  int index = hash(courseToInt(toLookup->Course));
+  int index = hash(stringToInt(toLookup->Course));
+  CDH** retList = (CDH**)calloc(QUERY_RETURN_SIZE,sizeof(CDH*));
 
+  int i = 0;//Helps to index pointers in double pointer
   for (CDH* iter = D->CDHTable[index]; iter != NULL; iter = iter->next)
   {
     if (equal_CDH(toLookup, iter))//If we've found the matching entry as iter's next
     {
-      printf("FOUND!");
-      return iter;
+      retList[i] = iter;
+      i++;
     }
   }
-  return NULL;
+  if (retList[0] == NULL) return NULL;//If list is empty, return null directly
+  return retList;
 }
 
 //CR Lookup
-CR* lookup_CR(Database* D, CR* toLookup)
+CR** lookup_CR(Database* D, CR* toLookup)
 {
-  int index = hash(courseToInt(toLookup->Course));
+  int index = hash(stringToInt(toLookup->Course));
+  CR** retList = (CR**)calloc(QUERY_RETURN_SIZE,sizeof(CR*));
 
+  int i = 0;//Helps to index pointers in double pointer
   for (CR* iter = D->CRTable[index]; iter != NULL; iter = iter->next)
   {
     if (equal_CR(toLookup, iter))//If we've found the matching entry as iter's next
     {
-      printf("FOUND!");
-      return iter;
+      retList[i] = iter;
+      i++;
     }
   }
-  return NULL;
+  if (retList[0] == NULL) return NULL;//If list is empty, return null directly
+  return retList;
 }
 
 /*
@@ -119,7 +135,7 @@ CR* lookup_CR(Database* D, CR* toLookup)
 void insert_SNAP(Database* D, SNAP* toInsert)
 {
   //Which Bucket? Hashes on inserted SNAP's StudentId
-  int index = hash(toInsert->StudentId);
+  int index = hash(stringToInt(toInsert->StudentId));
 
   if (D->SNAPTable[index] == NULL)
   {
@@ -137,7 +153,7 @@ void insert_SNAP(Database* D, SNAP* toInsert)
 void insert_CSG(Database* D, CSG* toInsert)
 {
   //Which Bucket? Hashes on inserted CSG's StudentId
-  int index = hash(toInsert->StudentId);
+  int index = hash(stringToInt(toInsert->StudentId));
 
   if (D->CSGTable[index] == NULL)
   {
@@ -155,7 +171,7 @@ void insert_CSG(Database* D, CSG* toInsert)
 void insert_CP(Database* D, CP* toInsert)
 {
   //Which Bucket? Hashes on inserted CP's StudentId
-  int courseAsInt = courseToInt(toInsert->Course);
+  int courseAsInt = stringToInt(toInsert->Course);
   int index = hash(courseAsInt);
 
   if (D->CPTable[index] == NULL)
@@ -174,9 +190,8 @@ void insert_CP(Database* D, CP* toInsert)
 void insert_CDH(Database* D, CDH* toInsert)
 {
   //Which Bucket? Hashes on inserted CDH's StudentId
-  int courseAsInt = courseToInt(toInsert->Course);
+  int courseAsInt = stringToInt(toInsert->Course);
   int index = hash(courseAsInt);
-
   if (D->CDHTable[index] == NULL)
   {
     //Fresh, empty Bucket
@@ -193,7 +208,7 @@ void insert_CDH(Database* D, CDH* toInsert)
 void insert_CR(Database* D, CR* toInsert)
 {
   //Which Bucket? Hashes on inserted CR's StudentId
-  int courseAsInt = courseToInt(toInsert->Course);
+  int courseAsInt = stringToInt(toInsert->Course);
   int index = hash(courseAsInt);
 
   if (D->CRTable[index] == NULL)
@@ -215,7 +230,7 @@ void insert_CR(Database* D, CR* toInsert)
 
 void delete_SNAP(Database* D, SNAP* toDelete)
 {
-  int index = hash(toDelete->StudentId);
+  int index = hash(stringToInt(toDelete->StudentId));
 
   if (D->SNAPTable[index] == NULL) return; //Not found
 
@@ -242,7 +257,7 @@ void delete_SNAP(Database* D, SNAP* toDelete)
 
 void delete_CSG(Database* D, CSG* toDelete)
 {
-  int index = hash(toDelete->StudentId);
+  int index = hash(stringToInt(toDelete->StudentId));
 
   if (D->CSGTable[index] == NULL) return; //Not found
 
@@ -269,7 +284,7 @@ void delete_CSG(Database* D, CSG* toDelete)
 
 void delete_CP(Database* D, CP* toDelete)
 {
-  int index = hash(courseToInt(toDelete->Course));
+  int index = hash(stringToInt(toDelete->Course));
 
   if (D->CPTable[index] == NULL) return; //Not found
 
@@ -296,7 +311,7 @@ void delete_CP(Database* D, CP* toDelete)
 
 void delete_CDH(Database* D, CDH* toDelete)
 {
-  int index = hash(courseToInt(toDelete->Course));
+  int index = hash(stringToInt(toDelete->Course));
 
   if (D->CDHTable[index] == NULL) return; //Not found
 
@@ -322,7 +337,7 @@ void delete_CDH(Database* D, CDH* toDelete)
 
 void delete_CR(Database* D, CR* toDelete)
 {
-  int index = hash(courseToInt(toDelete->Course));
+  int index = hash(stringToInt(toDelete->Course));
 
   if (D->CRTable[index] == NULL) return; //Not found
 

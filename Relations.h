@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define IDLENGTH 7
 #define NAMELENGTH 30
 #define ADDRESSLENGTH 30
 #define PHONELENGTH 13
@@ -14,7 +15,7 @@
 //StudentId-Name-Address-Grade
 typedef struct SNAP
 {
-  int StudentId;
+  char StudentId[IDLENGTH];
   char Name[NAMELENGTH];
   char Address[ADDRESSLENGTH];
   char Phone[PHONELENGTH];
@@ -25,7 +26,7 @@ typedef struct SNAP
 typedef struct CSG
 {
   char Course[COURSELENGTH];
-  int StudentId;
+  char StudentId[IDLENGTH];
   char Grade[GRADELENGTH];
   struct CSG* next;
 }CSG;
@@ -72,9 +73,9 @@ int equal_CR(CR* c1, CR* c2);
   Tuple creation fn's
 */
 
-SNAP* SNAP_new(int StudentId, char* Name, char* Address, char* Phone);
+SNAP* SNAP_new(char* StudentId, char* Name, char* Address, char* Phone);
 
-CSG* CSG_new(char* Course, int StudentId, char* Grade);
+CSG* CSG_new(char* Course, char* StudentId, char* Grade);
 
 CP* CP_new(char* Course, char* Prerequisite);
 

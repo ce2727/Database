@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define TABLESIZE 100
+#define QUERY_RETURN_SIZE 20
 
 typedef struct Database
 {
@@ -23,15 +24,15 @@ int hash(int input);
 int courseToInt(char* Course);
 
 //Lookup Variations
-SNAP* lookup_SNAP(Database* D, SNAP* toLookup);
+SNAP** lookup_SNAP(Database* D, SNAP* toLookup);
 
-CSG* lookup_CSG(Database* D, CSG* toLookup);
+CSG** lookup_CSG(Database* D, CSG* toLookup);
 
-CP* lookup_CP(Database* D, CP* toLookup);
+CP** lookup_CP(Database* D, CP* toLookup);
 
-CDH* lookup_CDH(Database* D, CDH* toLookup);
+CDH** lookup_CDH(Database* D, CDH* toLookup);
 
-CR* lookup_CR(Database* D, CR* toLookup);
+CR** lookup_CR(Database* D, CR* toLookup);
 
 
 
