@@ -14,7 +14,7 @@ int main()
   //insert_CSG(test, CSG_new("CSC101", "12345", "F")); <--- Uncomment to test multi-entry queries
   insert_CSG(test, CSG_new("CSC101", "12346", "B-"));
   insert_CSG(test, CSG_new("CSC103", "12347", "B"));
-  insert_CSG(test, CSG_new("CSC103", "12347", "A"));
+//  insert_CSG(test, CSG_new("CSC103", "12347", "A"));
 
   //CP Test Data
   insert_CP(test, CP_new("CSC101", "CSC050"));
@@ -37,12 +37,15 @@ int main()
   insert_CR(test, CR_new("CSC102", "Bruckner S8"));
   insert_CR(test, CR_new("CSC103", "Turing 173"));
 
+
+
   /*
     Enter Queries Here:
   */
-  Query(test,"What grade did John get in CSC101?");
+  /*Query(test,"What grade did John get in CSC101?");
   Query(test,"What grade did Peter get in CSC103?");
   Query(test,"What grade did Joe get in CSC101?");
+  */
+  Query(test,"Where is Peter at 7pm on T?");
 
-  Query(test,"Where is Peter at 7am on T?");
 }

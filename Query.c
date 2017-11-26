@@ -52,6 +52,7 @@ char* Query(Database* D, char* input)
   } else if (strncmp(input,whereStart,4) == 0)//Where is 'student name' at 'time' on 'day'? Query
 
   {
+
     char* split;
     split = strtok(str," ");
     char* nameptr = (char*)malloc(NAMELENGTH*sizeof(char));
@@ -72,57 +73,65 @@ char* Query(Database* D, char* input)
 
     //Get studentID from SNAP
     char* ID = (lookup_SNAP(D,SNAP_new("*",nameptr,"*","*"))[0]->StudentId);
+
     //Get student's enrolled courses from CSG
-    CSG** eCourses = lookup_CSG(D, CSG_new("*",ID,"*"));
+    CSG** eCourses = select_CSG(D, ID);
 
-    //Get the Course Rooms of all enrolled courses
-      CDH** tCourses = (CDH**)calloc(TABLESIZE,sizeof(CDH*));
-      int cdhIndex = 0; //Current index of the CDH list
-      for (int e = 0; e < QUERY_RETURN_SIZE; e++)
-      {
-        if (eCourses[e] != NULL)//Check for empty entry
-        {
-          //For each CDH bucket
-          for (int b = 0; b < TABLESIZE; b++)
-          {
-            //Check list
-            for (CDH* iter = D->CDHTable[b]; iter != NULL; iter = iter->next)
-            {
-              if (strcmp(iter->Course,eCourses[e]->Course) == 0)//If there's a course match
-              {
-                tCourses[cdhIndex] = iter;//Add it to the list
-                cdhIndex++;
-              }
-            }
-          }
-        }
-      }
-
-    //Get the Course Rooms of all enrolled courses
-    CR** rCourses = (CR**)calloc(TABLESIZE,sizeof(CR*));
-    int crIndex = 0; //Current index of the CR list
-    for (int e = 0; e < QUERY_RETURN_SIZE; e++)
+    for (int i = 0; i < TABLESIZE; i++)
     {
-      if (tCourses[e] != NULL)//Check for empty entry
+      if (eCourses[i] != NULL)
       {
-        //For each course room bucket
-        for (int b = 0; b < TABLESIZE; b++)
-        {
-          //Check list
-          for (CR* iter = D->CRTable[b]; iter != NULL; iter = iter->next)
-          {
-            if (strcmp(iter->Course,tCourses[e]->Course) == 0)//If there's a course match
-            {
-              rCourses[crIndex] = iter;//Add it to the list
-              crIndex++;
-            }
-          }
-        }
+        //printf("%s\n", eCourses[i]->Course);
       }
     }
-    printf("------------------------------------------\n");
-    char* Location = rCourses[0]->Room;
-    printf("| %s is at %s on %s at %s\n",nameptr, Location, dayptr, hourptr);
-    printf("------------------------------------------\n");
+
+    //Make flat lists for CSG and CDH's so join doesn't have to deal with buckets
+    CSG** flatCSG = (CSG**)calloc(200, sizeof(CSG*));
+    int CSGIndex = 0;
+    for(int p = 0; p < TABLESIZE; p++){
+      for (CSG* iter = D->CSGTable[p]; iter != NULL; iter = iter->next)
+      {
+        flatCSG[CSGIndex] = iter;
+        CSGIndex++;
+      }
+    }
+
+
+    //Make flat lists for CR and CDH's so join doesn't have to deal with buckets
+    CR** flatCR = (CR**)calloc(200, sizeof(CR*));
+    int crIndex = 0;
+    for(int p = 0; p < TABLESIZE; p++){
+      for (CR* iter = D->CRTable[p]; iter != NULL; iter = iter->next)
+      {
+        flatCR[crIndex] = iter;
+        crIndex++;
+      }
+    }
+
+    //Make flat lists for CR and CDH's so join doesn't have to deal with buckets
+    CDH** flatCDH = (CDH**)calloc(200, sizeof(CDH*));
+    int cdhIndex = 0;
+    for(int p = 0; p < TABLESIZE; p++){
+      for (CDH* iter = D->CDHTable[p]; iter != NULL; iter = iter->next)
+      {
+        flatCDH[cdhIndex] = iter;
+        cdhIndex++;
+      }
+    }
+
+      CRDH** CRDHList = join_CR_CDH(flatCR, flatCDH);
+      CSGRDH** CSGRDHList = join_CSG_CRDH(eCourses, CRDHList);
+      for (int i = 0; i < 500; i++)
+      {
+        if (CSGRDHList[i] != NULL)
+        {
+          if(strcmp(CSGRDHList[i]->Day,dayptr)== 0 && strcmp(CSGRDHList[i]->Hour,hourptr)==0)
+          {
+            printf("----------------------------------------\n");
+            printf("| %s is at %s on %s at %s \n", nameptr,CSGRDHList[i]->Room,dayptr,hourptr);
+            printf("----------------------------------------\n");
+          }
+        }
+      }
   }
 }

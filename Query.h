@@ -1,4 +1,4 @@
-#include "Database.h"
+#include "Algebra.h"
 
 //Queries database D on user input string 'input'
 char* Query(Database* D, char* input);

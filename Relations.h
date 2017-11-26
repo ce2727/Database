@@ -56,6 +56,24 @@ typedef struct CR
   struct CR* next;
 }CR;
 
+//USED ONLY FOR ALGEBRA
+typedef struct CRDH
+{
+  char Course[COURSELENGTH];
+  char Room[ROOMLENGTH];
+  char Day[DAYLENGTH];
+  char Hour[HOURLENGTH];
+} CRDH;
+
+typedef struct CSGRDH
+{
+  char Course[COURSELENGTH];
+  char StudentId[IDLENGTH];
+  char Grade[GRADELENGTH];
+  char Room[ROOMLENGTH];
+  char Day[DAYLENGTH];
+  char Hour[HOURLENGTH];
+} CSGRDH;
 /*
   Tuple comparision fn's
 */
@@ -69,6 +87,10 @@ int equal_CP(CP* c1, CP* c2);
 int equal_CDH(CDH* c1, CDH* c2);
 
 int equal_CR(CR* c1, CR* c2);
+
+int equal_CRDH(CRDH* c1, CRDH* c2);
+
+int equal_CSGRDH(CSGRDH* c1, CSGRDH* c2);
 /*
   Tuple creation fn's
 */
@@ -82,3 +104,7 @@ CP* CP_new(char* Course, char* Prerequisite);
 CDH* CDH_new(char* Course, char* Day, char* Hour);
 
 CR* CR_new(char* Course, char* Room);
+
+CRDH* CRDH_new(char* Course, char* Room, char* Day, char* Hour);
+
+CSGRDH* CSGRDH_new(char* Course, char* StudentId, char* Grade, char* Room, char* Day, char* Hour);
