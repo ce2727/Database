@@ -41,7 +41,7 @@ int main()
     Enter Queries Here:
   */
   Query(test,"What grade did John get in CSC101?");
-  Query(test,"What grade did Peter get in CSC101?");
+  Query(test,"What grade did Peter get in CSC103?");
   Query(test,"What grade did Joe get in CSC101?");
 
   Query(test,"Where is Peter at 7am on T?");
