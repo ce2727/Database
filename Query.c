@@ -121,17 +121,25 @@ char* Query(Database* D, char* input)
 
       CRDH** CRDHList = join_CR_CDH(flatCR, flatCDH);
       CSGRDH** CSGRDHList = join_CSG_CRDH(eCourses, CRDHList);
+      int result = 0;
       for (int i = 0; i < 500; i++)
       {
         if (CSGRDHList[i] != NULL)
         {
           if(strcmp(CSGRDHList[i]->Day,dayptr)== 0 && strcmp(CSGRDHList[i]->Hour,hourptr)==0)
           {
+            result = 1;
             printf("----------------------------------------\n");
             printf("| %s is at %s on %s at %s \n", nameptr,CSGRDHList[i]->Room,dayptr,hourptr);
             printf("----------------------------------------\n");
           }
         }
+      }
+      if (!result)
+      {
+        printf("----------------------------------------\n");
+        printf("| %s is not in class at %s on %s\n", nameptr, hourptr, dayptr);
+        printf("----------------------------------------\n");
       }
   }
 }

@@ -1,5 +1,6 @@
 #include "Algebra.h"
 
+//Relational Algebra: Select function for ID's on CSG structs
 CSG** select_CSG(Database* D, char* ID)
 {
   CSG** flatCSG = (CSG**)calloc(200, sizeof(CSG*));
@@ -16,6 +17,8 @@ CSG** select_CSG(Database* D, char* ID)
   return flatCSG;
 }
 
+
+//Relational Algebra: Join function between CR and CDH
 CRDH** join_CR_CDH(CR** CRS, CDH** CDHS)
 {
   int rIndex = 0;
@@ -60,6 +63,8 @@ CRDH** join_CR_CDH(CR** CRS, CDH** CDHS)
   return retVal;
 }
 
+
+//Relational Algebra: Join function between CSG and CRDH
 CSGRDH** join_CSG_CRDH(CSG** CSGS, CRDH** CRDHS)
 {
   int rIndex = 0;
